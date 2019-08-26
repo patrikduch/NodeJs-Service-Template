@@ -1,0 +1,6 @@
+node_modules/
+typings/
+yarn.lock
+yarn-error.log
+dist/server.js
+dist/node.log
