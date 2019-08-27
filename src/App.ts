@@ -4,14 +4,18 @@ import compression from 'compression';
 import { Request, Response } from 'express';
 
 import sequelize from './util/database/orm/sequelize/database';
+import { ProjectDetail } from './models/ProjectDetail';
 
-import Product from './models/Product';
+
 
 const app = express();
 
-sequelize.modelManager.addModel(Product);
+
+
+sequelize.modelManager.addModel(ProjectDetail);
 
 console.log(sequelize.models);
+
 
 // Add headers
 app.use(function(req, res, next) {
@@ -41,13 +45,32 @@ app.use(function(req, res, next) {
 app.use(compression());
 
 app.get('/', function(req: Request, res: Response) {
-	res.send('ahoj');
+
+	ProjectDetail.findAll({
+		limit: 1,
+		where: {
+		  //your where conditions, or without them if you need ANY entry
+		},
+		order: [ [ 'createdAt', 'DESC' ]]
+	  }).then(function(entries: any){
+		//only difference is that you get users list limited to 1
+		//entries[0]
+
+		console.log(entries[0].name);
+
+		res.send({
+			name: entries[0].name
+		});
+	  }); 
+
+
+	
 });
 
 sequelize
 	.sync()
 	.then((result: any) => {
-		console.log(Product.getTableName());
+		
 		app.listen(8080, () => {
 			console.log('Listening on port 8080');
 		});
