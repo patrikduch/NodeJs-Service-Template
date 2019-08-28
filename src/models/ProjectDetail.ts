@@ -2,10 +2,12 @@ import sequelize from '../util/database/orm/sequelize/database';
 
 import { Model, DataTypes } from 'sequelize';
 
+import Theme from './Theme';
+
 class ProjectDetail extends Model {
 	public id!: number;
-	public ownerId!: number;
 	public name!: string;
+	public themeId!: number;
 
 	public readonly createdAt!: Date;
 	public readonly updatedAt!: Date;
@@ -22,7 +24,12 @@ ProjectDetail.init(
 		name: {
 			type: DataTypes.STRING,
 			allowNull: false
-		}
+		},
+
+		themeId: {
+			type: DataTypes.INTEGER.UNSIGNED,
+			allowNull: false,
+		},
 	},
 	{
 		sequelize,
@@ -30,8 +37,27 @@ ProjectDetail.init(
 	}
 );
 
-ProjectDetail.create({
-	name: 'Bakalářská práce'
+
+
+ProjectDetail.belongsTo(Theme, { foreignKey: 'themeId' })
+
+
+/*
+
+Theme.create({
+	name: 'Default (initial) theme',
+	code: 'default-theme'
+
 });
 
-export { ProjectDetail };
+
+ProjectDetail.create({
+	name: 'Bakalářská práce',
+	themeId: 1
+});
+*/
+
+
+
+
+export default ProjectDetail;

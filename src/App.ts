@@ -4,13 +4,21 @@ import { Request, Response } from 'express';
 import sequelize from './util/database/orm/sequelize/database';
 
 import koa from 'koa';
+
+import cors from '@koa/cors';
+
 import { addHook } from 'sequelize-typescript';
-import { async } from 'q';
+import { async, resolve } from 'q';
+
+import ProjectDetail from './models/ProjectDetail';
+import Theme from './models/Theme';
+
+sequelize.modelManager.addModel(ProjectDetail);
+sequelize.modelManager.addModel(Theme);
 
 /*
 
-import { ProjectDetail } from './models/ProjectDetail';
-import Theme from './models/Theme';
+
 
 const app = express();
 
@@ -79,21 +87,59 @@ sequelize
 
 	*/
 
-const app = new koa();
-const PORT = 4000;
+import Koa from 'koa';
+import  Router  from 'koa-router';
 
-// Logging middleware
-app.use(async (ctx, next) => {
-	console.log(`${ctx.method} ${ctx.url} ${new Date()}`);
-	next(); // To pass request to another process
-});
+const app = new Koa()
+const router = new Router()
 
-app.listen(PORT);
+async function responseHandler (ctx: any, next: any) {  
+  try {
+    await next()
+  } catch (err) {
+    ctx.throw(err.code, err.message)
+  }
 
-app.use(async ctx => {
-	ctx.body = {
-		name: 'Bakalářská práce'
-	};
-});
+  // Ignore post-processing if body was already set
+  if (!ctx.state.response || ctx.body) return
 
-console.log(`Listening on port ${PORT}`);
+  ctx.status = 200
+  ctx.body = {
+	...ctx.state.response,
+    ok: true
+  }
+}
+
+router.get('/', async (ctx: any) => {
+
+
+	const data = await ProjectDetail.findAll({
+		limit: 1,
+		where: {
+			//your where conditions, or without them if you need ANY entry
+		},
+		order: [['createdAt', 'DESC']]
+	});
+
+  	ctx.state.response = {
+		  name: data[0].name,
+		  theme: 'default-theme'
+	}
+})
+app.use(cors());
+app
+  .use(responseHandler)
+  .use(router.routes())
+  .use(router.allowedMethods())
+
+
+sequelize
+	.sync()
+	.then((result: any) => {
+		app.listen(8080, () => {
+			console.log('Listening on port 8080');
+		});
+	})
+	.catch((error: any) => {
+		console.log(error);
+	});
