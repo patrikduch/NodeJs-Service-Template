@@ -1,26 +1,24 @@
-// Server routing
-import KoaRouter from 'koa-router';
 
-const router = new KoaRouter();
+import Router from 'koa-router';
 
-import ProjectDetail from '../models/ProjectDetail';
+// Query objects imports
+import ProjectDetailQuery from '../data/projectdetail/ProjectDetailQuery';
+
+// Creation of new instance of Koa router
+const router = new Router();
+
 
 router.get('/', async (ctx: any) => {
-	const data = await ProjectDetail.findAll({
-		limit: 1,
-		where: {
-			//your where conditions, or without them if you need ANY entry
-		},
-		order: [['createdAt', 'DESC']]
-	});
 
-	ctx.compress = true;
 
-	ctx.state.response = {
-		name: data[0].name,
-		theme: 'default-theme'
-	};
+	const query = new ProjectDetailQuery();
+	const data = await query.getProjectDetail();
+
+  	ctx.state.response = {
+		  name: data[0].name,
+		  theme: 'default-theme'
+	}
 });
-   
+
 
 export default router;

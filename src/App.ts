@@ -1,36 +1,14 @@
-import sequelize from './util/database/orm/sequelize/database';
-import cors from '@koa/cors';
-import compress from 'koa-compress';
-import ProjectDetail from './models/ProjectDetail';
-import Theme from './models/Theme';
-
 import Koa from 'koa';
-import router from './routes';
-
-// Middleware handlers
-import responseHandler from './util/server/koa/handlers/promise/responseHandler';
+import sequelize from './util/database/orm/sequelize/Database';
+import registerModels from './util/database/orm/sequelize/registerModels';
+import Middleware from './util/server/koa/Middleware';
 
 const app = new Koa();
+// Register all models for synchronisation
+registerModels(sequelize);
 
-sequelize.modelManager.addModel(ProjectDetail);
-sequelize.modelManager.addModel(Theme);
-
-app.use(cors());
-
-app.use(
-	compress({
-		filter: function(content_type) {
-			return /text/i.test(content_type);
-		},
-		threshold: 2048,
-		flush: require('zlib').Z_SYNC_FLUSH
-	})
-);
-
-app
-	.use(responseHandler)
-	.use(router.routes())
-	.use(router.allowedMethods());
+// Middleware configuration setup (Cors processing, routes setup, custom handlers for promises etc. )
+Middleware.setup(app);
 
 sequelize
 	.sync()

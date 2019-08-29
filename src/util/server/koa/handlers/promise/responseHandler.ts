@@ -1,18 +1,21 @@
 import { Context } from 'koa';
 
-export default async function responseHandler(ctx: Context, next: Function) {
+
+async function responseHandler (ctx: any, next: any) {  
 	try {
-		await next();
+	  await next()
 	} catch (err) {
-		ctx.throw(err.code, err.message);
+	  ctx.throw(err.code, err.message)
 	}
-
+  
 	// Ignore post-processing if body was already set
-	if (!ctx.state.response || ctx.body) return;
-
-	ctx.state = 200;
+	if (!ctx.state.response || ctx.body) return
+  
+	ctx.status = 200
 	ctx.body = {
-		...ctx.state.response,
-		ok: true
-	};
-}
+	  ...ctx.state.response,
+	  ok: true
+	}
+  }
+
+  export { responseHandler };

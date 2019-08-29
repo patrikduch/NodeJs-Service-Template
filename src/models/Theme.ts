@@ -1,4 +1,4 @@
-import sequelize from '../util/database/orm/sequelize/database';
+import sequelize from '../util/database/orm/sequelize/Database';
 
 import { Model, DataTypes } from 'sequelize';
 
@@ -7,8 +7,8 @@ class Theme extends Model {
 	public name!: string;
 	public code!: string;
 
-	public readonly createdAt!: Date;
-	public readonly updatedAt!: Date;
+	//public readonly createdAt!: Date;
+	//public readonly updatedAt!: Date;
 }
 
 Theme.init(

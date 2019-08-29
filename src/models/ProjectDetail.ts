@@ -1,4 +1,4 @@
-import sequelize from '../util/database/orm/sequelize/database';
+import sequelize from '../util/database/orm/sequelize/Database';
 
 import { Model, DataTypes } from 'sequelize';
 
@@ -9,8 +9,8 @@ class ProjectDetail extends Model {
 	public name!: string;
 	public themeId!: number;
 
-	public readonly createdAt!: Date;
-	public readonly updatedAt!: Date;
+	//public readonly createdAt!: Date;
+	//public readonly updatedAt!: Date;
 }
 
 ProjectDetail.init(
