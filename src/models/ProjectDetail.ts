@@ -1,5 +1,4 @@
-import sequelize from '../util/database/orm/sequelize/Database';
-
+import Database from '../util/database/orm/sequelize/Database';
 import { Model, DataTypes } from 'sequelize';
 
 import Theme from './Theme';
@@ -7,7 +6,6 @@ import Theme from './Theme';
 class ProjectDetail extends Model {
 	public id!: number;
 	public name!: string;
-	public themeId!: number;
 
 	//public readonly createdAt!: Date;
 	//public readonly updatedAt!: Date;
@@ -24,23 +22,15 @@ ProjectDetail.init(
 		name: {
 			type: DataTypes.STRING,
 			allowNull: false
-		},
-
-		themeId: {
-			type: DataTypes.INTEGER.UNSIGNED,
-			allowNull: false,
-		},
+		}
 	},
 	{
-		sequelize,
+		sequelize: Database,
 		tableName: 'projectdetail'
 	}
 );
 
-
-
-ProjectDetail.belongsTo(Theme, { foreignKey: 'themeId' })
-
+Theme.belongsTo(ProjectDetail, { foreignKey: 'projectId' });
 
 /*
 
@@ -56,8 +46,5 @@ ProjectDetail.create({
 	themeId: 1
 });
 */
-
-
-
 
 export default ProjectDetail;

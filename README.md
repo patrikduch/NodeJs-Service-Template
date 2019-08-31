@@ -39,3 +39,12 @@ https://github.com/koajs/cors
 # Sequelize
 
 Je objektivně relační mapper (ORM). Jedná se o third party npm balíček.
+
+
+static getInstance() {
+		return new Sequelize('bachelorproject', 'admin', '007kokot', {
+			dialect: 'mysql',
+			dialectModule: require('mysql2'),
+			host: '193.105.159.179'
+		});
+	}

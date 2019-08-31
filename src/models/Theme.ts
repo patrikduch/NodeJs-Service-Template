@@ -1,11 +1,11 @@
-import sequelize from '../util/database/orm/sequelize/Database';
-
+import Database from '../util/database/orm/sequelize/Database';
 import { Model, DataTypes } from 'sequelize';
 
 class Theme extends Model {
 	public id!: number;
 	public name!: string;
 	public code!: string;
+	public projectId!: number;
 
 	//public readonly createdAt!: Date;
 	//public readonly updatedAt!: Date;
@@ -27,10 +27,15 @@ Theme.init(
 		code: {
 			type: DataTypes.STRING,
 			allowNull: false
+		},
+
+		projectId: {
+			type: DataTypes.INTEGER.UNSIGNED,
+			allowNull: true
 		}
 	},
 	{
-		sequelize,
+		sequelize: Database,
 		tableName: 'theme'
 	}
 );
