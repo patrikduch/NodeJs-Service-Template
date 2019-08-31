@@ -1,15 +1,15 @@
-import someObject from './connection.json';
+import connection from './connection.json';
 import { Sequelize } from 'sequelize-typescript';
 
-export default someObject.dev == 0
+export default connection.dev == 0
 	? new Sequelize(
-			someObject.prod.databaseName,
-			someObject.prod.username,
-			someObject.prod.password,
+			connection.prod.databaseName,
+			connection.prod.username,
+			connection.prod.password,
 			{
 				dialect: 'mysql',
 				dialectModule: require('mysql2'),
-				host: someObject.prod.hostname
+				host: connection.prod.hostname
 			}
 	  )
 	: new Sequelize('bachelorproject', 'admin', '007kokot', {

@@ -1,4 +1,4 @@
-import Database from '../util/database/orm/sequelize/Database';
+import Database from '../util/database/orm/sequelize/database';
 import { Model, DataTypes } from 'sequelize';
 
 class Theme extends Model {
@@ -6,9 +6,6 @@ class Theme extends Model {
 	public name!: string;
 	public code!: string;
 	public projectId!: number;
-
-	//public readonly createdAt!: Date;
-	//public readonly updatedAt!: Date;
 }
 
 Theme.init(

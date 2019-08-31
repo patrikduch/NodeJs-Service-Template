@@ -1,4 +1,4 @@
-import Database from '../util/database/orm/sequelize/Database';
+import Database from '../util/database/orm/sequelize/database';
 import { Model, DataTypes } from 'sequelize';
 
 import Theme from './Theme';
@@ -6,9 +6,6 @@ import Theme from './Theme';
 class ProjectDetail extends Model {
 	public id!: number;
 	public name!: string;
-
-	//public readonly createdAt!: Date;
-	//public readonly updatedAt!: Date;
 }
 
 ProjectDetail.init(

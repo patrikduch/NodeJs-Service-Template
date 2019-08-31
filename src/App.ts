@@ -1,4 +1,4 @@
-import Database from './util/database/orm/sequelize/Database';
+import Database from './util/database/orm/sequelize/database';
 import Koa from 'koa';
 import Middleware from './util/server/koa/Middleware';
 

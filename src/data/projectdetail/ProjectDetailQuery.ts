@@ -1,19 +1,20 @@
-
 import ProjectDetail from '../../models/ProjectDetail';
+import Theme from '../../models/Theme';
 
 export default class ProjectDetailQuery {
+	async getProjectDetail() {
+		const data = await Theme.findAll({
+			limit: 1,
+			include: [
+				{
+					model: ProjectDetail,
+					where: {
+						id: 1
+					}
+				}
+			]
+		});
 
-  async getProjectDetail() {
-
-	const data = await ProjectDetail.findAll({
-		limit: 1,
-		where: {
-			//your where conditions, or without them if you need ANY entry
-		},
-		order: [['createdAt', 'DESC']]
-	});
-
-	return data;
-
-  }
+		return data;
+	}
 }
